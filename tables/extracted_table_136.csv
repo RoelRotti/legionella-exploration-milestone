@@ -1,0 +1,26 @@
+0,1,2,3,4,5,6,7,8,9,10,11
+TMV,"TMV
+Temperature","Hot Supply
+Temperature","Cold Supply
+Temperature","Hot Supply
+Source","Cold Supply
+Source","TMV Pipework
+>2 Meters?",Type of Strainers,"TMV
+Accessible",Make of TMV,"Type of
+TMV",Local Isolation
+22.,37.3°c,39.6°c,18.3°c,CAL 1&2,CWST 1,No,In-Line Strainers,Yes,Sirrus TS503,TMV 2/3,Yes – Hot & Cold
+23.,38.0°c,45.2°c,17.0°c,CAL 1&2,IWS 1,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+24.,38.8°c,45.2°c,17.0°c,CAL 1&2,IWS 1,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+25.,17.2°c,17.2°c,17.2°c,CAL 1&2,IWS 1,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+26.,17.6°c,17.2°c,17.2°c,CAL 1&2,IWS 1,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+27.,39.8°c,45.7°c,21.7°c,CAL 1&2,IWS 1,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+28.,30.1°c,40.1°c,19.8°c,CAL 1&2,CWST 1,No,In-Line Strainers,Yes,Sirrus TS503,TMV 2/3,Yes – Hot & Cold
+29.,48.9°c,50.4°c,17.8°c,CAL 1&2,CWST 1,No,Unknown,No,Unknown,Unknown,Unknown
+30.,39.9°c,52.4°c,19.2°c,Combi 1,IWS 2,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+31.,39.6°c,53.8°c,18.9°c,Combi 1,IWS 2,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+32.,41.4°c,51.9°c,18.7°c,Combi 1,IWS 2,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+33.,ISO,ISO,17.0°c,Combi 1,IWS 2,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+34.,41.5°c,62.1°c,18.4°c,WH 1,IWS 3,No,In-Line Strainers,Yes,Unknown,TMV 2/3,Yes – Hot & Cold
+35.,43.6°c,60.8°c,17.9°c,WH 1,IWS 3,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold
+36.,30.7°c,57.4°c,16.9°c,WH 1,IWS 3,No,In-Line Strainers,Yes,Caleffi,TMV 2/3,Yes – Hot & Cold
+37.,40.4°c,61.7°c,18.9°c,WH 1,IWS 3,No,In-Line Strainers,Yes,Saracen,TMV 2/3,Yes – Hot & Cold

@@ -1,0 +1,716 @@
+Page 1 extraction result: Here is the extracted table in JSON format:
+
+```json
+{
+  "Management Details": {
+    "Company Name": "T & D Barrs Plumbing & Heating Ltd",
+    "Unit": "Unit 7 Thundridge Business Park",
+    "Location": "Thundridge, Nr Ware",
+    "County": "Hertfordshire",
+    "Postcode": "SG12 0SS"
+  },
+  "Site Details": {
+    "Site Name": "Barnehurst Junior School",
+    "Address": "Barnehurst Close, Erith",
+    "Postcode": "DA8 3NL",
+    "Site Contact": {
+      "Name": "Mr L Polden",
+      "Responsible Person": "Mr L Polden",
+      "Date of Survey": "29/10/2022",
+      "Survey Review Date": "29/10/2024"
+    }
+  },
+  "Administrative Details": {
+    "Job Reference": "9484630",
+    "Risk Assessment Produced By": "Chris Helmore",
+    "Helmore Site Contacts": {
+      "L Polden": "07778 381851",
+      "Chris Helmore": "07540 403870",
+      "Jamie Helmore": "07810 501335",
+      "Head Office": "01462 895588"
+    }
+  }
+}
+```
+Page 2 extraction result: Here are the tables extracted from the provided text in JSON format:
+
+```json
+{
+  "tables": [
+    {
+      "title": "General Building information",
+      "data": [
+        {
+          "Site name": "Barnehurst Junior School",
+          "Building Use": "School",
+          "Number of Floors": 2,
+          "Age of Building": "1920s",
+          "Building Occupancy": "Occupied on a daily basis",
+          "Susceptible Individuals": "This Premises is usually occupied by a mixture of young children and teachers. This means that there is a mixture of low risk and moderate risk occupants. Other factors such as smoking may increase the risk of individuals."
+        }
+      ]
+    },
+    {
+      "title": "Building Water Services Information",
+      "data": [
+        {
+          "Water Source": "Town Main",
+          "Drinking Water": "Mains Fed",
+          "Cold Water": "Mains Fed",
+          "Hot Water": "Unvented Cylinders",
+          "Spray Systems Present": "Yes",
+          "Evaporative Systems Present": "No"
+        }
+      ]
+    }
+  ]
+}
+```
+Page 3 extraction result: Here is the table extracted from the text in JSON format:
+
+```json
+{
+  "Contamination_and_Accessibility": {
+    "A": {
+      "Description": "Source Condition",
+      "Score": 2
+    },
+    "B": {
+      "Description": "Source Accessibility",
+      "Score": 3
+    },
+    "Amplification": {
+      "C": {
+        "Description": "Acidity/Alkalinity",
+        "Score": 3
+      },
+      "D": {
+        "Description": "Incubation",
+        "Score": 2
+      },
+      "E": {
+        "Description": "Water Change Rate",
+        "Score": 1
+      }
+    },
+    "Exposure_of_Exposed_Population": {
+      "F": {
+        "Description": "Nature of exposed population",
+        "Score": 1
+      },
+      "G": {
+        "Description": "Degree of Exposure",
+        "Score": 3
+      },
+      "H": {
+        "Description": "Droplet Formation",
+        "Score": 2
+      }
+    },
+    "Potential_Site_Risk_Factor_Results": {
+      "Score_Calculation": "(AxB) + (CxDxE) + (FxGxH)",
+      "Risk_Categories": {
+        "Low_Risk": "3-12",
+        "Medium_Risk": "13-36",
+        "High_Risk": "36-88"
+      },
+      "Identified_Risks": {
+        "Low_Risks": 0,
+        "Medium_Risks": 1,
+        "High_Risks": 2
+      }
+    }
+  }
+}
+```
+Page 4 extraction result: ```json
+{
+  "tables": [
+    {
+      "Risk ID": 1,
+      "Asset Type": "Auto-Pressurisation Unit",
+      "Location": "Plant Room",
+      "Risk Description": "APU cold mains water feed is an effective dead leg, double check valve is not fitted far enough back close to tee branch.",
+      "Risk Factor": "High",
+      "Photographic Evidence": "",
+      "Recommendations": "Install a double check valve at the start of the tee branch",
+      "Works Approved?": "",
+      "Action Completed?": "",
+      "Contractor Name": "Helmore Industrial Water Treatment Ltd.",
+      "Date Completed": "",
+      "Senior Engineers Signature": "",
+      "Responsible Persons Signature": "",
+      "Other Comments": ""
+    }
+  ]
+}
+```
+Page 5 extraction result: Here's the table extracted from the provided text in JSON format:
+
+```json
+{
+  "Risk_ID": 2,
+  "Asset_Type": "Outlet",
+  "Location": "Site-wide",
+  "Risk_Description": "Various outlets are scaled which can allow bacteria to grow",
+  "Risk_Factor": "High",
+  "Photographic_Evidence": null,
+  "Recommendations": "Implement routine descaling of outlets",
+  "Works_Approved": null,
+  "Action_Completed": null,
+  "Contractor_Name": "Helmore Industrial Water Treatment Ltd.",
+  "Date_Completed": null,
+  "Senior_Engineers_Signature": null,
+  "Responsible_Persons_Signature": null,
+  "Other_Comments": null
+}
+```
+Page 6 extraction result: Here’s the extracted table in JSON format:
+
+```json
+{
+  "riskAssessment": {
+    "Risk ID": 3,
+    "Asset Type": "Mains Pipework",
+    "Location": "Girls toilets by cooking",
+    "Risk Description": "Dead leg of pipework or potential low use feed",
+    "Risk Factor": "High",
+    "Photographic Evidence": "High",
+    "Recommendations": "Install check valve closer to start of branch from water main. Or alternatively remove if not in use.",
+    "Works Approved?": "",
+    "Action Completed?": "",
+    "Contractor Name": "Helmore Industrial Water Treatment Ltd.",
+    "Date Completed": "",
+    "Senior Engineers Signature": "",
+    "Responsible Persons Signature": "",
+    "Other Comments": ""
+  }
+}
+```
+Page 7 extraction result: Here's the extracted table in JSON format:
+
+```json
+{
+  "Risk": {
+    "Risk ID": 4,
+    "Asset Type": "External Tap",
+    "Location": "External Wall of Gandhi Mobile Class",
+    "Risk Description": "Low use outlet",
+    "Risk Factor": "High",
+    "Photographic Evidence": "Included",
+    "Recommendations": "Install a double check valve and flush once per week."
+  },
+  "Works Status": {
+    "Works Approved?": "",
+    "Action Completed?": "",
+    "Contractor Name": "Helmore Industrial Water Treatment Ltd.",
+    "Date Completed": "",
+    "Senior Engineers Signature": "",
+    "Responsible Persons Signature": "",
+    "Other Comments": ""
+  }
+}
+```
+Page 8 extraction result: Here is the extracted table in JSON format:
+
+```json
+{
+  "table": [
+    {
+      "Risk ID": 5,
+      "Asset Type": "Unvented Cylinder",
+      "Location": "Gandhi Mobile Class",
+      "Risk Description": "Hot water temperature stored below 50c for handwashing temperatures",
+      "Risk Factor": "High",
+      "Photographic Evidence": "",
+      "Recommendations": "Turn Cylinder up and install a TMV-3 Valve for handwashing temperatures",
+      "Works Approved?": "",
+      "Action Completed?": "",
+      "Contractor Name": "Helmore Industrial Water Treatment Ltd.",
+      "Date Completed": "",
+      "Senior Engineers Signature": "",
+      "Responsible Persons Signature": "",
+      "Other Comments": ""
+    }
+  ]
+}
+```
+Page 9 extraction result: Here's the table from the provided text in JSON format:
+
+```json
+{
+  "Risk_Information": {
+    "Risk_ID": 6,
+    "Asset_Type": "External Tap",
+    "Location": "External Wall of Staff Room Building",
+    "Risk_Description": "Low use outlet",
+    "Risk_Factor": "High",
+    "Photographic_Evidence": "High",
+    "Recommendations": "Install a double check valve and flush once per week."
+  },
+  "Approval_Information": {
+    "Works_Approved": "",
+    "Action_Completed": "",
+    "Contractor_Name": "Helmore Industrial Water Treatment Ltd.",
+    "Date_Completed": "",
+    "Senior_Engineers_Signature": "",
+    "Responsible_Persons_Signature": ""
+  },
+  "Other_Comments": ""
+}
+```
+Page 10 extraction result: Here is the table extracted from the image in JSON format:
+
+```json
+{
+  "Risk_ID": 7,
+  "Asset_Type": "Electric Handwash Unit",
+  "Location": "Kitchen",
+  "Risk_Description": "Electric hand wash possible low use outlet",
+  "Risk_Factor": "High",
+  "Photographic_Evidence": "",
+  "Recommendations": "Flush once per week or remove if not used.",
+  "Works_Approved": "",
+  "Action_Completed": "",
+  "Contractor_Name": "Helmore Industrial Water Treatment Ltd.",
+  "Date_Completed": "",
+  "Senior_Engineers_Signature": "",
+  "Responsible_Persons_Signature": "",
+  "Other_Comments": ""
+}
+```
+Page 11 extraction result: Here is the extracted table in JSON format:
+
+```json
+{
+  "Risk_ID": 8,
+  "Asset_Type": "Mains Pipework",
+  "Location": "Site wide",
+  "Risk_Description": "Uninsulated pipework.",
+  "Risk_Factor": "Medium",
+  "Photographic_Evidence": "",
+  "Recommendations": "Insulate and label accordingly.",
+  "Works_Approved": "",
+  "Action_Completed": "",
+  "Contractor_Name": "Helmore Industrial Water Treatment Ltd.",
+  "Date_Completed": "",
+  "Senior_Engineers_Signature": "",
+  "Responsible_Persons_Signature": "",
+  "Other_Comments": ""
+}
+```
+Page 12 extraction result: ```json
+[
+    {
+        "Risk ID": "9",
+        "Asset Type": "Mains Pipework",
+        "Location": "Kitchen",
+        "Risk Description": "Piped in a way that causes a dead leg (possibly a previous return that hasn't been taken out)",
+        "Risk Factor": "High",
+        "Photographic Evidence": "Provided",
+        "Recommendations": "Re-pipe hot feed to remove the unnecessary loop of pipe",
+        "Works Approved?": "",
+        "Action Completed?": "",
+        "Contractor Name": "Helmore Industrial Water Treatment Ltd.",
+        "Date Completed": "",
+        "Senior Engineers Signature": "",
+        "Responsible Persons Signature": "",
+        "Other Comments": ""
+    }
+]
+```
+Page 13 extraction result: ```json
+[
+    {
+        "Risk ID": "10",
+        "Asset Type": "Outlet",
+        "Location": "Kitchen",
+        "Risk Description": "low use outlet",
+        "Risk Factor": "High",
+        "Photographic Evidence": "High Caution Hot surface",
+        "Recommendations": "If this does not get used regularly then flush once per week."
+    },
+    {
+        "Works Approved?": "",
+        "Action Completed?": "",
+        "Contractor Name": "Helmore Industrial Water Treatment Ltd.",
+        "Date Completed": "",
+        "Senior Engineers Signature": "",
+        "Responsible Persons Signature": "",
+        "Other Comments": ""
+    }
+]
+```
+Page 14 extraction result: Here’s the extracted table in JSON format:
+
+```json
+{
+  "RiskAssessment": {
+    "RiskID": 11,
+    "AssetType": "External Outlet",
+    "Location": "External Wall of Kitchen Building",
+    "RiskDescription": "Possible low use outlet with a hose laying on the floor",
+    "RiskFactor": "High",
+    "PhotographicEvidence": true,
+    "Recommendations": "Detach & coil hose up, install a double check valve and flush once per week.",
+    "WorksApproved": null,
+    "ActionCompleted": null,
+    "ContractorName": "Helmore Industrial Water Treatment Ltd.",
+    "DateCompleted": null,
+    "SeniorEngineersSignature": null,
+    "ResponsiblePersonsSignature": null,
+    "OtherComments": null
+  }
+}
+```
+Page 15 extraction result: Here is the extracted table in JSON format:
+
+```json
+{
+  "tables": [
+    {
+      "title": "Exposure & Host Susceptibility",
+      "columns": [
+        "Factor",
+        "Description",
+        "Score"
+      ],
+      "rows": [
+        {
+          "Factor": "F - Nature of exposed population",
+          "Description": "Average Risk",
+          "Score": 1
+        },
+        {
+          "Factor": "F - Nature of exposed population",
+          "Description": "High Risk (elderly/infirm)",
+          "Score": 2
+        },
+        {
+          "Factor": "F - Nature of exposed population",
+          "Description": "Special risk (cooling tower / healthcare)",
+          "Score": 3
+        },
+        {
+          "Factor": "G - Degree of exposure",
+          "Description": "Slight (<3 hours/week)",
+          "Score": 1
+        },
+        {
+          "Factor": "G - Degree of exposure",
+          "Description": "Moderate (3 to 30 hrs/wk)",
+          "Score": 2
+        },
+        {
+          "Factor": "G - Degree of exposure",
+          "Description": "High (>30 hours/week)",
+          "Score": 3
+        },
+        {
+          "Factor": "H - Droplet formation",
+          "Description": "Still water (e.g. quench tank)",
+          "Score": 1
+        },
+        {
+          "Factor": "H - Droplet formation",
+          "Description": "Flowing water (e.g. tap)",
+          "Score": 2
+        },
+        {
+          "Factor": "H - Droplet formation",
+          "Description": "Coarse Droplets (e.g. shower)",
+          "Score": 3
+        },
+        {
+          "Factor": "H - Droplet formation",
+          "Description": "Aerosol, fine mist (e.g. cooling tower)",
+          "Score": 4
+        }
+      ]
+    },
+    {
+      "title": "Risk Assessment",
+      "columns": [
+        "Risk Category",
+        "Risk Range"
+      ],
+      "rows": [
+        {
+          "Risk Category": "Low Risk",
+          "Risk Range": "3-12"
+        },
+        {
+          "Risk Category": "Medium Risk",
+          "Risk Range": "13-36"
+        },
+        {
+          "Risk Category": "High Risk",
+          "Risk Range": "36-88"
+        }
+      ]
+    }
+  ]
+}
+```
+Page 16 extraction result: ```json
+{
+  "table": [
+    {
+      "Asset ID": "001",
+      "Description": "Unvented Water Heater 01",
+      "Location": "Plant Room"
+    },
+    {
+      "Asset ID": "002",
+      "Description": "Unvented Water Heater 02",
+      "Location": "Plant Room"
+    },
+    {
+      "Asset ID": "003",
+      "Description": "Unvented Water Heater 03",
+      "Location": "Kitchen"
+    },
+    {
+      "Asset ID": "004",
+      "Description": "Unvented Water Heater 04",
+      "Location": "Kitchen"
+    },
+    {
+      "Asset ID": "005",
+      "Description": "Unvented Water Heater 05",
+      "Location": "Mobile Classroom"
+    },
+    {
+      "Asset ID": "006",
+      "Description": "Electric Handwash 01",
+      "Location": "Kitchen"
+    },
+    {
+      "Asset ID": "007",
+      "Description": "Auto-Pressurisation Unit 01",
+      "Location": "Plant Room"
+    },
+    {
+      "Asset ID": "008",
+      "Description": "Pressure Vessel 01",
+      "Location": "Plant Room"
+    },
+    {
+      "Asset ID": "009",
+      "Description": "Pressure Vessel 02",
+      "Location": "Plant Room"
+    },
+    {
+      "Asset ID": "010",
+      "Description": "Pressure Vessel 03",
+      "Location": "Kitchen"
+    },
+    {
+      "Asset ID": "011",
+      "Description": "Pressure Vessel 04",
+      "Location": "Mobile Classroom"
+    },
+    {
+      "Asset ID": "012",
+      "Description": "Return Pump 01",
+      "Location": "Plant Room"
+    },
+    {
+      "Asset ID": "013",
+      "Description": "Tea Point 01",
+      "Location": "Staff Room"
+    }
+  ]
+}
+```
+Page 17 extraction result: Here is the table extracted in JSON format:
+
+```json
+{
+  "inspection_table": [
+    {
+      "question": "Is there a Risk Assessment?",
+      "yes": "✓",
+      "no": "",
+      "comments": "✓"
+    },
+    {
+      "question": "Risk Systems on site?",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Particularly susceptible occupants present?",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Is there an up to date logbook",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Is there system of control?",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Is the purpose of the SOC detailed",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Responsible persons detailed",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Reporting Structure",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Lines of communication",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Schematics of plant layout present and valid",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Is there a regime of tests? (e.g. temps)",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Training records present",
+      "yes": "✓",
+      "no": "",
+      "comments": ""
+    },
+    {
+      "question": "Action plan in the event of outbreak detailed at the site",
+      "yes": "✓",
+      "no": "",
+      "comments": "✓"
+    }
+  ]
+}
+```
+Page 18 extraction result: ```json
+{
+  "tables": [
+    {
+      "title": "Flushing of water systems",
+      "columns": ["Task", "Yes", "No", "Comments"],
+      "rows": [
+        {
+          "Task": "Weekly low use outlets flushed?",
+          "Yes": "✓",
+          "No": "",
+          "Comments": ""
+        },
+        {
+          "Task": "Expansion vessels flushed (monthly-six monthly?)",
+          "Yes": "✓",
+          "No": "",
+          "Comments": ""
+        },
+        {
+          "Task": "Monthly calorifier readings?",
+          "Yes": "✓",
+          "No": "",
+          "Comments": ""
+        },
+        {
+          "Task": "Monthly tap temperatures?",
+          "Yes": "✓",
+          "No": "",
+          "Comments": ""
+        },
+        {
+          "Task": "Annual key tap temperatures?",
+          "Yes": "✓",
+          "No": "",
+          "Comments": ""
+        },
+        {
+          "Task": "Six monthly / monthly EWH outlet testing?",
+          "Yes": "✓",
+          "No": "✓",
+          "Comments": ""
+        }
+      ]
+    },
+    {
+      "title": "Cold water systems",
+      "columns": ["Task", "Yes", "No", "Comments"],
+      "rows": [
+        {
+          "Task": "DCW storage tank temperatures monitored?",
+          "Yes": "",
+          "No": "",
+          "Comments": "N/A"
+        },
+        {
+          "Task": "Annual inspection / disinfection?",
+          "Yes": "",
+          "No": "",
+          "Comments": "N/A"
+        },
+        {
+          "Task": "Monthly tap temperatures?",
+          "Yes": "",
+          "No": "",
+          "Comments": "N/A"
+        },
+        {
+          "Task": "Annual key tap temperatures?",
+          "Yes": "",
+          "No": "",
+          "Comments": "N/A"
+        }
+      ]
+    },
+    {
+      "title": "Recommendations to be implemented",
+      "columns": ["Recommendation"],
+      "rows": [
+        {
+          "Recommendation": "Install double check valve close to tee branch on Auto-pressurisation unit"
+        },
+        {
+          "Recommendation": "Descale outlets"
+        },
+        {
+          "Recommendation": "Remove dead leg/fit double check valve in girls toilets"
+        },
+        {
+          "Recommendation": "Flush low use outlets or remove"
+        },
+        {
+          "Recommendation": "Turn up temperature on water heater Gandhi class"
+        },
+        {
+          "Recommendation": "Insulate all uninsulated pipework"
+        },
+        {
+          "Recommendation": "Re-pipe hot water pipework in kitchen"
+        }
+      ]
+    }
+  ]
+}
+```

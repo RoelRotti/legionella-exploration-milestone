@@ -1,0 +1,53 @@
+0,1,2,3,4,5,6,7
+,,,,,,,
+Reference:,,Calorifier 1 (Left),,,Calorifier 2 (Right),,
+Location:,,Boiler Room,,,Boiler Room,,
+Accessible?,,Yes,,,Yes,,
+Supplied From:,,CWST 1,,,CWST 1,,
+Expansion Vessel Fitted?,,No,,,No,,
+Expansion Vessel Capacity:,,N/A,,,N/A,,
+Supplying:,,Hot Water to Junior and Infants School,,,Hot Water to Junior and Infants School,,
+Hot Water System Type:,,Calorifier,,,Calorifier,,
+Vented or Un-Vented Cylinder?,,Vented,,,Vented,,
+Orientation:,,Vertical,,,Vertical,,
+Connected/Single Unit:,,Linked to Calorifier 2,,,Linked to Calorifier 1,,
+Make/Model:,,Strebel – ATI CC 400,,,Strebel – ATI CC 400,,
+Age of Cylinder (If Known):,,November 2020,,,November 2020,,
+Storage Cylinder Material (If Known):,,Glass Lined Steel,,,Glass Lined Steel,,
+Approximate Volume (Litres):,,390 Litres,,,390 Litres,,
+Insulated?,,Pre-Insulated,,,Pre-Insulated,,
+Insulation Type:,,Polyurethane Foam,,,Polyurethane Foam,,
+Access hatch to Internal Surfaces?,,Yes,,,Yes,,
+Internal Surfaces Accessible?,,Limited Access to Hatch,,,Limited Access to Hatch,,
+Associated Pipework Material:,,Copper,,,Copper,,
+Associated Pipework Sizes?,,"Flow – 35mm to 54mm
+Return Loop – 28mm
+Cold Supply – 54mm to 35mm",,,"Flow – 35mm to 54mm
+Return Loop – 28mm
+Cold Supply – 54mm to 35mm",,
+Isolation Valves Fitted:,,Yes – Return Loop & Cold Feed Only,,,Yes – Return Loop & Cold Feed Only,,
+Location of Drain Valve:,,On Cold Feed,,,On Cold Feed,,
+Drain Valve Size:,,15mm,,,15mm,,
+Drain Allow for Purging of Debris?,,Yes,,,Yes,,
+Method of Heating:,,Primary Coil,,,Primary Coil,,
+Sacrificial Anode Fitted?,,No,,,No,,
+Period of Operation:,,Set Timer,,,Set Timer,,
+Thermostat set Temperature (°c):,,Set Mark of 3.5,,,Set Mark of 3.5,,
+Time Water Temperatures Recorded:,,09:05am,,,09:05am,,
+Temperature Gauge Reading (°c):,,"Cistern:
+60°c","Flow:
+62°c","Return:
+N/A","Cistern:
+60°c","Flow:
+62°c","Return:
+N/A"
+Pipework Temperature (°c):,,"Cold Feed:
+17.4°c","Flow:
+60.1°c","Return:
+55.7°c","Cold Feed:
+16.9°c","Flow:
+57.5°c*","Return:
+55.9°c"
+De-stratification Pump Fitted?,,No,,,No,,
+De-stratification Pump Timing?,,N/A,,,N/A,,
+Comment,,,,,,,
