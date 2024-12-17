@@ -27,9 +27,7 @@ class ExportPDFToExcel:
         )
         self.pdf_services = PDFServices(credentials=self.credentials)
         self.temp_dir = 'temp_pdfs'
-        self.output_dir = 'output/ExportPDFToExcel'
         os.makedirs(self.temp_dir, exist_ok=True)
-        os.makedirs(self.output_dir, exist_ok=True)
 
     def split_pdf(self, input_pdf):
         pdf_reader = PyPDF2.PdfReader(input_pdf)
@@ -75,7 +73,7 @@ class ExportPDFToExcel:
             return None
 
     def merge_excel_files(self, excel_files):
-        writer = pd.ExcelWriter(os.path.join(self.output_dir, 'merged_output.xlsx'), 
+        writer = pd.ExcelWriter(os.path.join(self.output_dir, f'{self.file_name}-pdf-extract.xlsx'), 
                               engine='xlsxwriter')
         
         for excel_file in excel_files:
@@ -132,11 +130,19 @@ class ExportPDFToExcel:
             if file and os.path.exists(file):
                 os.remove(file)
 
-    def process(self, input_pdf):
-        
+    def process(self, file_name):
+        # Create output directory if it doesn't exist
+        self.file_name = file_name
+        self.output_dir = './output/2-ExportPDFToExcel'
+        os.makedirs(self.output_dir, exist_ok=True)
+
+        # Construct output path
+        input_pdf_path='./output/1-FilteredPages/'+file_name+'_filtered_pages.pdf',
+        output_pdf_path = os.path.join(self.output_dir, f'{file_name}-pdf-extract.xlsx')
+
         
         # Split PDF into individual pages
-        temp_pdf_files = self.split_pdf(input_pdf)
+        temp_pdf_files = self.split_pdf(input_pdf_path)
         
         # Convert each page to Excel
         excel_files = []
@@ -156,4 +162,4 @@ class ExportPDFToExcel:
 
 if __name__ == "__main__":
     processor = ExportPDFToExcel()
-    processor.process(input_pdf = './lessness/lessness_filtered_pages.pdf')
+    processor.process(file_name = 'llesness')

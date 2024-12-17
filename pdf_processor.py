@@ -35,7 +35,7 @@ orq_client.set_user(id=2024)
 
 
 
-def extract_pages_with_tables(input_pdf_path, output_pdf_path):
+def extract_pages_with_tables(input_pdf_path, name_file):
     """
     Extracts pages containing tables from a PDF file and creates a new PDF with only those pages.
 
@@ -45,17 +45,25 @@ def extract_pages_with_tables(input_pdf_path, output_pdf_path):
 
     Args:
         input_pdf_path (str): Path to the input PDF file
-        output_pdf_path (str): Path where the filtered PDF should be saved
+        name_file (str): Base name for the output file (e.g., 'llesness')
 
     Returns:
-        None: Writes filtered PDF to output_pdf_path
+        str: Path to the output PDF file
     """
     import base64
     import io
+    import os
     import fitz
     from PIL import Image
     from PyPDF2 import PdfReader, PdfWriter
     import openai
+
+    # Create output directory if it doesn't exist
+    output_dir = './output/1-FilteredPages'
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Construct output path
+    output_pdf_path = os.path.join(output_dir, f'{name_file}_filtered_pages.pdf')
 
     logger.info("Starting extraction of pages with tables")
 
