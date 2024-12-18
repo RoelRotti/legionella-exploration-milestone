@@ -110,9 +110,14 @@ class ExportPDFToExcel:
                         if sub_df.empty:
                             continue
                         
-                        new_sheet_name = f"{page_num}_table_{table_counter}"
+                        # Check if this is the only table (no empty rows)
+                        if len(split_indices) == 2:  # Only one split means no additional tables
+                            new_sheet_name = f"{page_num}"  # Just use page_x
+                        else:
+                            new_sheet_name = f"{page_num}_table_{table_counter}"
+                            table_counter += 1  # Only increment when we actually write a table
+                        
                         sub_df.to_excel(writer, sheet_name=new_sheet_name, index=False)
-                        table_counter += 1  # Only increment when we actually write a table
                 else:
                     # If no empty rows, save the entire dataframe as one sheet
                     df.to_excel(writer, sheet_name=page_num, index=False)
@@ -138,8 +143,8 @@ class ExportPDFToExcel:
         os.makedirs(self.output_dir, exist_ok=True)
 
         # Construct output path
-        input_pdf_path= input_path+file_name+'-filtered-pages.pdf',
-        output_pdf_path = os.path.join(self.output_dir, f'{file_name}-pdf-extract.xlsx')
+        input_pdf_path= f'{input_path}{file_name}-filtered-pages.pdf'
+        #utput_pdf_path = os.path.join(self.output_dir, f'{file_name}-pdf-extract.xlsx')
 
         
         # Split PDF into individual pages

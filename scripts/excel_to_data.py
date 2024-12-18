@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 import json
 import os
@@ -11,7 +12,11 @@ orq_client = OrqAI(
 orq_client.set_user(id=2024)
 
 
-def process_excel_file(file_name, input_path='output/2-ExportPDFToExcel/', output_path='output/3-ExcelToData/'):
+def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', output_path='./output/3-ExcelToData/', assets_known=False):
+
+    check_counter = 0
+
+    logging.info("Processing file "+file_name)
 
     excel_file_path = input_path+file_name+'-pdf-extract.xlsx'
 
@@ -28,7 +33,7 @@ def process_excel_file(file_name, input_path='output/2-ExportPDFToExcel/', outpu
 
         # TODO: If table < 12 rows input as one input, otherwise in batches 
 
-        prompt = f"""Below is a table extracted from an excel file in a CSV format. 
+        prompt_unknown_if_assets = """Below is a table extracted from an excel file in a CSV format. 
                             The table is part of a legionella risk assessment. Examine it carefully. 
                             You should extract specific data from the table if is present. The data you
                             are looking for is specific assets. Assets are water-related equipment, like taps, showers etc.
@@ -61,7 +66,54 @@ def process_excel_file(file_name, input_path='output/2-ExportPDFToExcel/', outpu
 
                             For the asset count, the default value is 1, unless it is explicitly mentioned.
 
-                            If no assets are found, return an empty list.
+                            If no assets are found, return an empty list."""
+        
+        #TODO: add sheet name, only include sub-tables if multiple tables.
+        prompt_known_if_assets = """Below is a table extracted from an excel file in a CSV format. 
+                            The table is part of a legionella risk assessment. Examine it carefully. 
+                            You should extract specific data from the table if is present. The data you
+                            are looking for is specific assets. Assets are water-related equipment, like taps, showers etc.
+                            The tables are selected by a human, so they are likely likely to contain assets. 
+                            The tables are extracted from pages however, and one page may contain multiple tables.
+                            So it could be that case that you are examining a table from a page where another table contained the assets.
+                            In that case, you should not extract the assets from the table you are examining.
+                            
+
+                            First examine the table structure carefully.
+
+                            Then extract each asset and extract the following:
+                            -Asset type (like taps, showers etc)
+                            -Asset location (like Main School, etc)
+                            -Asset count (like 6x, 1x etc, just put the number here)
+
+                            Assets my have supply sources or supply to other assets, so be careful to not extract assets that are mentioned in combination with 'supply' and do not have an explicit location.
+                            Ignore these 'supply' related assets. If the location seems to be an asset, it is highly probable that it is a supply related asset. 
+                            Assets that are mentioned in combination with 'supply' are not assets may be ignored since these are already mentioned elsewhere.
+
+                            Also, for each asset table be thorough in  what information to extract. 'Type of outlet' for example may be ignored if 'asset' is mentioned explicitly in the table.
+
+                            Return the data in the following format:
+
+                            {{ "assets" : [ {{ "asset_type" : "asset_type", "asset_location" : "asset_location", "asset_count" : "asset_count" }}, {{ "asset_type" : "asset_type", "asset_location  " : "asset_location", "asset_count" : "asset_count"  }}, ...] }}
+                            If multiples of assets are mentioned (like (6x Toilets	Main School)) then return each asset as a separate row, like
+                            {{ "assets" : [ {{ "asset_type" : "Toilets", "asset_location" : "Main School", "asset_count" : "6" }}, .... }}
+                            
+
+
+                            Only include assets if the asset type and location combination are explicitly mentioned. If the location in combination with the asset type is not explicitly mentioned, then ignore the asset. You cannot return an asset without a location.
+                            Only give the name of the location, nothing else. Be as specific as possible about the location.
+                            The location needs to be a physical location in a building. If mulitple scopes of locations are mentinioned, start with biggest scope and then combine with smaller scopes, connected with a hyphen.
+                            For example: "Main School - Kitchen - Toilets"
+
+                            For the asset count, the default value is 1, unless it is explicitly mentioned."""
+
+        # Two different prompts, one for known assets, one for unknown assets
+        if assets_known:
+            prompt_assets = prompt_known_if_assets
+        else:
+            prompt_assets = prompt_unknown_if_assets
+
+        prompt = f"""{prompt_assets}
                             An asset can be any of the following (or a variation thereof) : Above Ground Grease Separator
     Alternative techniques
     Anodic oxidation
@@ -403,6 +455,9 @@ def process_excel_file(file_name, input_path='output/2-ExportPDFToExcel/', outpu
 
                 print(flag)
 
+                if flag == "Check":
+                    check_counter += 1
+
                 # # Check if results are the same
                 # # Check in here because Sonnet cannot adhere to JSON Schema
                 # response = orq_client.deployments.invoke(
@@ -479,9 +534,9 @@ def process_excel_file(file_name, input_path='output/2-ExportPDFToExcel/', outpu
                         asset_count_ = asset["asset_count"]
                         flag_ = flag
                         new_row = pd.DataFrame({
+                            'asset_count': [asset_count_],
                             'asset_type': [asset_type_],
                             'asset_location': [asset_location_],
-                            'asset_count': [asset_count_],
                             'sheet_name': [sheet_name],
                             'flag': [flag_]
                         })
@@ -502,7 +557,7 @@ def process_excel_file(file_name, input_path='output/2-ExportPDFToExcel/', outpu
 
         
             # Create the output directory if it doesn't exist
-            output_dir = os.path.join(output_folder, "3-ExcelToData")
+            output_dir = output_path
             os.makedirs(output_dir, exist_ok=True)
 
             # Convert assets list to DataFrame
@@ -513,23 +568,36 @@ def process_excel_file(file_name, input_path='output/2-ExportPDFToExcel/', outpu
                 asset_count_ = asset["asset_count"]
                 flag_ = flag
                 new_row = pd.DataFrame({
+                    'asset_count': [asset_count_],
                     'asset_type': [asset_type_],
                     'asset_location': [asset_location_],
-                    'asset_count': [asset_count_],
                     'sheet_name': [sheet_name],
                     'flag': [flag_]
                 })
                 df_assets = pd.concat([df_assets, new_row], ignore_index=True)
 
-    print(len(df_assets))
+    logging.info(f'Number of checks: {check_counter}')
+    logging.info(f'Number of assets: {len(df_assets)}')
 
     # Save in output/3-ExcelToData
     df_assets.to_excel(os.path.join(output_dir, f"{file_name}-assets-data.xlsx"), index=False)
 
     # Save in output/4-HumanReview
+
+    # Extract first folder from output_path and merge with human review folder
+    base_output_folder = output_path.split('/')[1]
+    human_review_path = os.path.join(base_output_folder, "4-HumanReview")
+    os.makedirs(human_review_path, exist_ok=True)
+
+    # Add columns for human review
+    df_assets['delete'] = ''
+    df_assets['sonnet_wrong'] = ''
+    df_assets['row_added'] = ''
+
+    logging.info(f"Saving human review file to {human_review_path}")
     
-    df_assets.to_excel(os.path.join("./output/4-HumanReview", f"{file_name}-assets-data-human-review.xlsx"), index=False)
+    df_assets.to_excel(os.path.join(human_review_path, f"{file_name}-assets-data-human-review.xlsx"), index=False)
 
 
-process_excel_file(file_name = 'llesness') #excel_file_path = 'output/ExportPDFToExcel/split_output.xlsx')
+#process_excel_file(file_name = 'llesness') #excel_file_path = 'output/ExportPDFToExcel/split_output.xlsx')
 

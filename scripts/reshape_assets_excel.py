@@ -1,9 +1,9 @@
 import pandas as pd
 import os   
 
-def multiply_quantities(file_name):
+def multiply_quantities(file_name, folder_path='./output'):
     # Read the input Excel file from HumanReview folder
-    input_file = f'./output/4-HumanReview/{file_name}-assets-data-human-review.xlsx'
+    input_file = f'{folder_path}/4-HumanReview/{file_name}-assets-data-human-review.xlsx'
     df = pd.read_excel(input_file, header=0)
     print("Columns:", df.columns.tolist())
     
@@ -42,7 +42,7 @@ def multiply_quantities(file_name):
     
     
     # Create output directory if it doesn't exist
-    output_dir = os.path.join("output", "5-MultipliedQuantities") 
+    output_dir = os.path.join(folder_path, "5-MultipliedQuantities") 
     os.makedirs(output_dir, exist_ok=True)
     
     # Save the expanded DataFrame

@@ -8,10 +8,10 @@ def normalize_string(s):
 def string_similarity(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
-def compare_excel_files(golden_file_path, created_file_name):
+def compare_excel_files(golden_file_path, created_file_name, folder_path='./output'):
     # Read the excel files
     golden_df = pd.read_excel(golden_file_path, header=0)
-    created_file_path = f'./output/5-MultipliedQuantities/{created_file_name}-assets-multiplied.xlsx'
+    created_file_path = f'{folder_path}/5-MultipliedQuantities/{created_file_name}-assets-multiplied.xlsx'
     created_df = pd.read_excel(created_file_path, header=0)
     
     # Create copies with standardized column names for comparison
@@ -50,15 +50,21 @@ def compare_excel_files(golden_file_path, created_file_name):
             
             # Split strings into words
             golden_type_words = set(golden_row['asset_type'].split())
-            golden_location_words = set(golden_row['asset_location'].split())
+            golden_location_cleaned = golden_row['asset_location'].replace('/', ' ').replace('-', ' ').replace('  ', ' ')
             created_type_words = set(created_row['asset_type'].split())
-            created_location_words = set(created_row['asset_location'].split())
+            created_location_cleaned = created_row['asset_location'].replace('/', ' ').replace('-', ' ').replace('  ', ' ')
             
-            # Check if one string is a substring of the other for asset_type
-            type_match = golden_row['asset_type'] in created_row['asset_type'] or \
-                         created_row['asset_type'] in golden_row['asset_type']
+            # Split cleaned strings into words
+            golden_location_words = set(golden_location_cleaned.split())
+            created_location_words = set(created_location_cleaned.split())
             
-            location_match = golden_location_words.issubset(created_location_words) or created_location_words.issubset(golden_location_words)
+            # Check if all separate words in asset_type are substrings of any strings in the other DataFrame
+            type_match = all(word in created_row['asset_type'] for word in golden_type_words) or \
+                         all(word in golden_row['asset_type'] for word in created_type_words)
+            
+            # Check if all separate words in asset_location are substrings of any strings in the other DataFrame
+            location_match = all(word in created_location_cleaned for word in golden_location_words) or \
+                             all(word in golden_location_cleaned for word in created_location_words)
             
             # If both type and location match
             if type_match and location_match:
@@ -86,9 +92,18 @@ def compare_excel_files(golden_file_path, created_file_name):
     print(f"length of missing_in_created: {len(missing_in_created)}")
     print(f"length of extra_in_created: {len(extra_in_created)}")
     
+    # Calculate match percentage
+    total_golden_records = len(golden_compare)
+    matching_records = total_golden_records - len(missing_in_created)
+    match_percentage = (matching_records / total_golden_records) * 100 if total_golden_records > 0 else 0
+    
+    # Add match percentage as a single value in asset_type column
+    missing_in_created.loc[len(missing_in_created), 'asset_type'] = f'Match Percentage: {match_percentage:.2f}%'
+    extra_in_created.loc[len(extra_in_created), 'asset_type'] = f'Match Percentage: {match_percentage:.2f}%'
+    
     # Save the results to Excel files
-    missing_in_created.to_excel(f'./output/6-GoldenOutput/{created_file_name}-missing_in_created.xlsx', index=False)
-    extra_in_created.to_excel(f'./output/6-GoldenOutput/{created_file_name}-extra_in_created.xlsx', index=False)
+    missing_in_created.to_excel(f'{folder_path}/6-CompareGoldenOutput/{created_file_name}-missing-in-created.xlsx', index=False)
+    extra_in_created.to_excel(f'{folder_path}/6-CompareGoldenOutput/{created_file_name}-extra-in-created.xlsx', index=False)
     
     print("\nRecords in golden file but missing from created file:")
     print(missing_in_created if not missing_in_created.empty else "None")
@@ -108,4 +123,4 @@ def compare_excel_files(golden_file_path, created_file_name):
     #     'extra_records': extra_in_created,
     #     'match_percentage': match_percentage
     # }
-compare_excel_files(golden_file_path = './output/6-GoldenOutput/Lessness Primary School.xlsx', created_file_name = 'llesness')
+#compare_excel_files(golden_file_path = './output/6-GoldenOutput/Lessness Primary School.xlsx', created_file_name = 'llesness')
