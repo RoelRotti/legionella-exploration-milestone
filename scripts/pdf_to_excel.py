@@ -130,14 +130,15 @@ class ExportPDFToExcel:
             if file and os.path.exists(file):
                 os.remove(file)
 
-    def process(self, file_name):
+    def process(self, file_name, input_path='./output/1-FilteredPages/', output_path='./output/2-ExportPDFToExcel/'):
+        logging.info(f"Processing file {file_name}")
         # Create output directory if it doesn't exist
         self.file_name = file_name
-        self.output_dir = './output/2-ExportPDFToExcel'
+        self.output_dir = output_path
         os.makedirs(self.output_dir, exist_ok=True)
 
         # Construct output path
-        input_pdf_path='./output/1-FilteredPages/'+file_name+'-filtered_pages.pdf',
+        input_pdf_path= input_path+file_name+'-filtered-pages.pdf',
         output_pdf_path = os.path.join(self.output_dir, f'{file_name}-pdf-extract.xlsx')
 
         

@@ -11,9 +11,9 @@ orq_client = OrqAI(
 orq_client.set_user(id=2024)
 
 
-def process_excel_file(file_name):
+def process_excel_file(file_name, input_path='output/2-ExportPDFToExcel/', output_path='output/3-ExcelToData/'):
 
-    excel_file_path = f'output/2-ExportPDFToExcel/{file_name}-pdf-extract.xlsx'
+    excel_file_path = input_path+file_name+'-pdf-extract.xlsx'
 
     excel_file = pd.ExcelFile(excel_file_path)
 
@@ -455,7 +455,7 @@ def process_excel_file(file_name):
 
 
                 # Create the output directory if it doesn't exist
-                output_dir = os.path.join("output", "3-ExcelToData")
+                output_dir = output_path
                 os.makedirs(output_dir, exist_ok=True)
 
                 # Special case: If assetsSonnet is empty and assetsGPT is not empty, then still make a row 
@@ -502,7 +502,7 @@ def process_excel_file(file_name):
 
         
             # Create the output directory if it doesn't exist
-            output_dir = os.path.join("output", "3-ExcelToData")
+            output_dir = os.path.join(output_folder, "3-ExcelToData")
             os.makedirs(output_dir, exist_ok=True)
 
             # Convert assets list to DataFrame
