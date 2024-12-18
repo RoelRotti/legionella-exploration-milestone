@@ -1,6 +1,6 @@
-from pdf_processor import extract_pages_with_tables
-from pdf_to_excel import ExportPDFToExcel
-from excel_to_data import process_excel_file
+from scripts.pdf_processor import extract_pages_with_tables
+from scripts.pdf_to_excel import ExportPDFToExcel
+from scripts.excel_to_data import process_excel_file
 
 #TODO: extract school
 

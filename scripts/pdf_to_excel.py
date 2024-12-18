@@ -137,7 +137,7 @@ class ExportPDFToExcel:
         os.makedirs(self.output_dir, exist_ok=True)
 
         # Construct output path
-        input_pdf_path='./output/1-FilteredPages/'+file_name+'_filtered_pages.pdf',
+        input_pdf_path='./output/1-FilteredPages/'+file_name+'-filtered_pages.pdf',
         output_pdf_path = os.path.join(self.output_dir, f'{file_name}-pdf-extract.xlsx')
 
         

@@ -19,13 +19,13 @@
 
 
 
-from reshape_assets_excel import multiply_quantities
+from scripts.reshape_assets_excel import multiply_quantities
 
 # Step 5: Multiply quantities
 # multiply_quantities(file_name='llesness')
 
 # Step 6: Compare with golden data
-from compare_excels import compare_excel_files
+from scripts.compare_excels import compare_excel_files
 
 compare_excel_files(golden_file_path = './output/6-GoldenOutput/Lessness Primary School.xlsx', created_file_name = 'llesness')
 #TODO: create dashboard
