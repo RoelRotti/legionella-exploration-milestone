@@ -22,12 +22,13 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
 
     excel_file_path = input_path+file_name+'-pdf-extract.xlsx'
 
-    excel_file = pd.ExcelFile(excel_file_path)
+    # Replace ExcelFile with read_excel using openpyxl engine
+    dfs = pd.read_excel(excel_file_path, sheet_name=None, engine='openpyxl')
 
     df_assets = pd.DataFrame()
 
-    for sheet_name in excel_file.sheet_names:
-        df = excel_file.parse(sheet_name)
+    # Process each sheet
+    for sheet_name, df in dfs.items():
         # Save each sheet to a separate CSV file using the sheet name
         df_string = df.to_csv(index=False)  # Gets CSV string format
 
