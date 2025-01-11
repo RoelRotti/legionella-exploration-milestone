@@ -22,8 +22,16 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
 
     excel_file_path = input_path+file_name+'-pdf-extract.xlsx'
 
-    # Replace ExcelFile with read_excel using openpyxl engine
-    dfs = pd.read_excel(excel_file_path, sheet_name=None, engine='openpyxl')
+    try:
+        # Explicitly use only openpyxl engine
+        dfs = pd.read_excel(
+            excel_file_path,
+            sheet_name=None,  # None means read all sheets
+            engine='openpyxl'
+        )
+    except Exception as e:
+        logging.error(f"Error reading Excel file: {str(e)}")
+        raise
 
     df_assets = pd.DataFrame()
 

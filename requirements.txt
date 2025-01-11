@@ -131,3 +131,6 @@ urllib3==2.2.3
 wcwidth==0.2.13
 XlsxWriter==3.2.0
 xlwt==0.7.2
+xlrd<2.0.0; python_version < "3.0"
+xlrd>=2.0.0; python_version >= "3.0"
+openpyxl>=3.1.2
