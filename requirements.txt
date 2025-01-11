@@ -13,7 +13,6 @@ blinker==1.9.0
 boto3==1.35.77
 botocore==1.35.77
 cachetools==5.5.0
-Camelot==12.6.29
 camelot-py==0.9.0
 certifi==2024.8.30
 cffi==1.17.1
@@ -130,7 +129,4 @@ tzdata==2024.2
 urllib3==2.2.3
 wcwidth==0.2.13
 XlsxWriter==3.2.0
-xlwt==0.7.2
-xlrd<2.0.0; python_version < "3.0"
-xlrd>=2.0.0; python_version >= "3.0"
 openpyxl>=3.1.2
