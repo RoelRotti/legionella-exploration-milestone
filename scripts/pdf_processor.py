@@ -11,6 +11,9 @@ import json
 import pandas as pd
 import xlsxwriter
 import pickle
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from azure.ai.formrecognizer import DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
@@ -27,8 +30,7 @@ Scan image for table
 
 from orq_ai_sdk import OrqAI
 orq_client = OrqAI(
-    # api_key=os.environ.get("ORQ_API_KEY"),  # Now it fetches from .env file
-    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3b3Jrc3BhY2VJZCI6ImIxYzJlZTBiLTc3ZDQtNDJmNi04ZWNiLTU5M2U0YjQ4OWRlMCIsImlhdCI6MTczMDgxNDA4MjMwMCwiaXNzIjoib3JxIn0.N2UPfFFJrNpxwvECINjgELY3YciWND1ykd5dQ4fklow",
+    api_key=os.environ.get("ORQ_API_KEY"),
     environment="production"
 )
 orq_client.set_user(id=2024)

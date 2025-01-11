@@ -3,10 +3,12 @@ import pandas as pd
 import json
 import os
 from orq_ai_sdk import OrqAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 orq_client = OrqAI(
-    # api_key=os.environ.get("ORQ_API_KEY"),  # Now it fetches from .env file
-    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3b3Jrc3BhY2VJZCI6ImIxYzJlZTBiLTc3ZDQtNDJmNi04ZWNiLTU5M2U0YjQ4OWRlMCIsImlhdCI6MTczMDgxNDA4MjMwMCwiaXNzIjoib3JxIn0.N2UPfFFJrNpxwvECINjgELY3YciWND1ykd5dQ4fklow",
+    api_key=os.environ.get("ORQ_API_KEY"),
     environment="production"
 )
 orq_client.set_user(id=2024)
