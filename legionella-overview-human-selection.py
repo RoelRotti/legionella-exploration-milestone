@@ -7,6 +7,7 @@ from scripts.reshape_assets_excel import multiply_quantities
 from scripts.compare_excels import compare_excel_files
 import sys
 import pandas as pd
+import os
 
 # At the top of the file, after the imports
 if 'phase_a_completed' not in st.session_state:
@@ -48,6 +49,26 @@ st.write("This app is designed to process Legionella Overview PDF documents and 
 
 # Add nickname input field before PDF upload
 file_nickname = st.text_input("Enter a nickname for your file (e.g., 'parkwood')", )
+
+# Add this function after the imports and before the session state initialization
+def ensure_directories_exist():
+    """Create all required output directories if they don't exist."""
+    base_path = './output-human-selection-pages'
+    subdirs = [
+        '1-FilteredManually',
+        '2-ExportPDFToExcel',
+        '3-ExcelToData',
+        '4-HumanReview',
+        '5-MultipliedQuantities',
+        '6-CompareGoldenOutput'
+    ]
+    
+    for subdir in subdirs:
+        dir_path = os.path.join(base_path, subdir)
+        os.makedirs(dir_path, exist_ok=True)
+
+# Add this line right after the Streamlit app setup (after the title)
+ensure_directories_exist()
 
 # Phase A: File upload and processing
 st.header("Phase A: PDF to Excel Conversion")
