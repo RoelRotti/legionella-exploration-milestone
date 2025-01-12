@@ -423,169 +423,169 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
             print(f"JSON decoding failed with GPT: {e}")
             assetsGPT = []
 
-        if assetsGPT:
+        #if assetsGPT:
 
-            # Repeat with Sonnet 3.5
-            response = orq_client.deployments.invoke(
-                key="legionella-table-extraction-v2",
-                context={
-                    "environments": [],
-                    "model_choice": [
-                        "sonnet"
-                    ]
+        # Repeat with Sonnet 3.5
+        response = orq_client.deployments.invoke(
+            key="legionella-table-extraction-v2",
+            context={
+                "environments": [],
+                "model_choice": [
+                    "sonnet"
+                ]
 
-                },
-                metadata={
-                    "page-number": sheet_name
-                }, 
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": prompt},
-                        ],
-                    }
-                ],
-            )
+            },
+            metadata={
+                "page-number": sheet_name
+            }, 
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": prompt},
+                    ],
+                }
+            ],
+        )
 
-            result_content = response.choices[0].message.content.strip()
-            # Parse the JSON response
-            try:
-                data = json.loads(result_content)
-                assetsSonnet = data.get("assets", [])
+        result_content = response.choices[0].message.content.strip()
+        # Parse the JSON response
+        try:
+            data = json.loads(result_content)
+            assetsSonnet = data.get("assets", [])
 
-                # Check if total assets and total number of assets are the same
-                total_assets_gpt = sum(int(asset["asset_count"]) for asset in assetsGPT)
-                total_assets_sonnet = sum(int(asset["asset_count"]) for asset in assetsSonnet)
-                if len(assetsGPT) == len(assetsSonnet) and total_assets_gpt == total_assets_sonnet:
-                    flag = ""
-                else:
-                    flag = "Check"
+            # Check if total assets and total number of assets are the same
+            total_assets_gpt = sum(int(asset["asset_count"]) for asset in assetsGPT)
+            total_assets_sonnet = sum(int(asset["asset_count"]) for asset in assetsSonnet)
+            if len(assetsGPT) == len(assetsSonnet) and total_assets_gpt == total_assets_sonnet:
+                flag = ""
+            else:
+                flag = "Check"
 
-                print(flag)
+            print(flag)
 
-                if flag == "Check":
-                    check_counter += 1
+            if flag == "Check":
+                check_counter += 1
 
-                # # Check if results are the same
-                # # Check in here because Sonnet cannot adhere to JSON Schema
-                # response = orq_client.deployments.invoke(
-                #     key="legionella-table-extraction-v2",
-                #     context={
-                #         "environments": [],
-                #         "model_choice": [
-                #             "4oCompare"
-                #         ]
+            # # Check if results are the same
+            # # Check in here because Sonnet cannot adhere to JSON Schema
+            # response = orq_client.deployments.invoke(
+            #     key="legionella-table-extraction-v2",
+            #     context={
+            #         "environments": [],
+            #         "model_choice": [
+            #             "4oCompare"
+            #         ]
 
-                #     },
-                #     metadata={
-                #         "page-number": sheet_name
-                #     }, 
-                #     messages=[
-                #         {
-                #             "role": "user",
-                #             "content": [
-                #                 {
-                #                     "type": "text",
-                #                     "text": f"""Below are two lists of assets. They are both structured like:
-                                    
-                #                     {{ "assets" : [ {{ "asset_type" : "asset_type", "asset_location" : "asset_location", "asset_count" : "asset_count" }}, {{ "asset_type" : "asset_type", "asset_location  " : "asset_location", "asset_count" : "asset_count"  }}, ...] }}
-                #                     If multiples of assets are mentioned (like (6x Toilets	Main School)) then return each asset as a separate row, like
-                #                     {{ "assets" : [ {{ "asset_type" : "Toilets", "asset_location" : "Main School", "asset_count" : "6" }}, .... }} 
-                                    
-                #                     Compare the two lists and determine if they are the same. The order does not matter. If the naming is slightly different,
-                #                     it is also not a problem. Most important is that the number of assets are the same.
+            #     },
+            #     metadata={
+            #         "page-number": sheet_name
+            #     }, 
+            #     messages=[
+            #         {
+            #             "role": "user",
+            #             "content": [
+            #                 {
+            #                     "type": "text",
+            #                     "text": f"""Below are two lists of assets. They are both structured like:
+                                
+            #                     {{ "assets" : [ {{ "asset_type" : "asset_type", "asset_location" : "asset_location", "asset_count" : "asset_count" }}, {{ "asset_type" : "asset_type", "asset_location  " : "asset_location", "asset_count" : "asset_count"  }}, ...] }}
+            #                     If multiples of assets are mentioned (like (6x Toilets	Main School)) then return each asset as a separate row, like
+            #                     {{ "assets" : [ {{ "asset_type" : "Toilets", "asset_location" : "Main School", "asset_count" : "6" }}, .... }} 
+                                
+            #                     Compare the two lists and determine if they are the same. The order does not matter. If the naming is slightly different,
+            #                     it is also not a problem. Most important is that the number of assets are the same.
 
-                #                     List 1: 
-                #                     {assetsGPT}
+            #                     List 1: 
+            #                     {assetsGPT}
 
-                #                     List 2: 
-                #                     {assetsSonnet}
+            #                     List 2: 
+            #                     {assetsSonnet}
 
-                #                     If the lists are the same, return True. If they are not the same, return False. Do not reply with anything else.
-                #                     """},
-                #             ],
-                #         }
-                #     ],
-                # )
+            #                     If the lists are the same, return True. If they are not the same, return False. Do not reply with anything else.
+            #                     """},
+            #             ],
+            #         }
+            #     ],
+            # )
 
-                # result_content = response.choices[0].message.content.strip()
-                # print(result_content)
-                # if result_content == "True":
-                #     flag = ""
-                # else:
-                #     flag = "Check"
-                # Create the output directory if it doesn't exist
-
-
-                # Create the output directory if it doesn't exist
-                output_dir = output_path
-                os.makedirs(output_dir, exist_ok=True)
-
-                # Special case: If assetsSonnet is empty and assetsGPT is not empty, then still make a row 
-                # with flag = "Check". Sonnet is better than 4o-mini, but we want to manually check
-                if (len(assetsSonnet) == 0) & (len(assetsGPT) > 0):
-                    new_row = pd.DataFrame({
-                            'asset_type': [""],
-                            'asset_location': [""],
-                            'asset_count': [""],
-                            'sheet_name': [sheet_name],
-                            'flag': ["Sonnet assumed no assets, GPT did assume assets"]
-                    })
-                    df_assets = pd.concat([df_assets, new_row], ignore_index=True)
-                
-                else: 
-                    # Convert assets list to DataFrame
-                    for asset in assetsSonnet:
-                        #for asset_type, asset_location in asset.items():
-                        asset_type_ = asset["asset_type"]
-                        asset_location_ = asset["asset_location"]
-                        asset_count_ = asset["asset_count"]
-                        flag_ = flag
-                        new_row = pd.DataFrame({
-                            'asset_count': [asset_count_],
-                            'asset_type': [asset_type_],
-                            'asset_location': [asset_location_],
-                            'sheet_name': [sheet_name],
-                            'flag': [flag_]
-                        })
-                        df_assets = pd.concat([df_assets, new_row], ignore_index=True)
-
-                # Don't go on to registering GPT's assets
-                continue
+            # result_content = response.choices[0].message.content.strip()
+            # print(result_content)
+            # if result_content == "True":
+            #     flag = ""
+            # else:
+            #     flag = "Check"
+            # Create the output directory if it doesn't exist
 
 
-            except json.JSONDecodeError as e:
-                print(f"JSON decoding failed with Sonnet 3.5: {e}")
-                assetsSonnet = []
-                flag = "Check, Sonnet failed"
-
-            # TODO: also include LLama
-
-        #print(result_content)
-
-        
             # Create the output directory if it doesn't exist
             output_dir = output_path
             os.makedirs(output_dir, exist_ok=True)
 
-            # Convert assets list to DataFrame
-            for asset in assetsGPT:
-                #for asset_type, asset_location in asset.items():
-                asset_type_ = asset["asset_type"]
-                asset_location_ = asset["asset_location"]
-                asset_count_ = asset["asset_count"]
-                flag_ = flag
+            # Special case: If assetsSonnet is empty and assetsGPT is not empty, then still make a row 
+            # with flag = "Check". Sonnet is better than 4o-mini, but we want to manually check
+            if (len(assetsSonnet) == 0) & (len(assetsGPT) > 0):
                 new_row = pd.DataFrame({
-                    'asset_count': [asset_count_],
-                    'asset_type': [asset_type_],
-                    'asset_location': [asset_location_],
-                    'sheet_name': [sheet_name],
-                    'flag': [flag_]
+                        'asset_type': [""],
+                        'asset_location': [""],
+                        'asset_count': [""],
+                        'sheet_name': [sheet_name],
+                        'flag': ["Sonnet assumed no assets, GPT did assume assets"]
                 })
                 df_assets = pd.concat([df_assets, new_row], ignore_index=True)
+            
+            else: 
+                # Convert assets list to DataFrame
+                for asset in assetsSonnet:
+                    #for asset_type, asset_location in asset.items():
+                    asset_type_ = asset["asset_type"]
+                    asset_location_ = asset["asset_location"]
+                    asset_count_ = asset["asset_count"]
+                    flag_ = flag
+                    new_row = pd.DataFrame({
+                        'asset_count': [asset_count_],
+                        'asset_type': [asset_type_],
+                        'asset_location': [asset_location_],
+                        'sheet_name': [sheet_name],
+                        'flag': [flag_]
+                    })
+                    df_assets = pd.concat([df_assets, new_row], ignore_index=True)
+
+            # Don't go on to registering GPT's assets
+            continue
+
+
+        except json.JSONDecodeError as e:
+            print(f"JSON decoding failed with Sonnet 3.5: {e}")
+            assetsSonnet = []
+            flag = "Check, Sonnet failed"
+
+        # TODO: also include LLama
+
+    #print(result_content)
+
+    
+        # Create the output directory if it doesn't exist
+        output_dir = output_path
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Convert assets list to DataFrame
+        for asset in assetsGPT:
+            #for asset_type, asset_location in asset.items():
+            asset_type_ = asset["asset_type"]
+            asset_location_ = asset["asset_location"]
+            asset_count_ = asset["asset_count"]
+            flag_ = flag
+            new_row = pd.DataFrame({
+                'asset_count': [asset_count_],
+                'asset_type': [asset_type_],
+                'asset_location': [asset_location_],
+                'sheet_name': [sheet_name],
+                'flag': [flag_]
+            })
+            df_assets = pd.concat([df_assets, new_row], ignore_index=True)
 
     logging.info(f'Number of checks: {check_counter}')
     logging.info(f'Number of assets: {len(df_assets)}')
