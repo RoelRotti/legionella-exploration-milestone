@@ -47,12 +47,12 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
         prompt_unknown_if_assets = """Below is a table extracted from an excel file in a CSV format. 
                             The table is part of a legionella risk assessment. Examine it carefully. 
                             You should extract specific data from the table if is present. The data you
-                            are looking for is specific assets. Assets are water-related equipment, like taps, showers etc.
+                            are looking for is specific assets. Assets are water-related equipment, like taps, showers etc. but may vary from anything to dead ends for example.
 
                             First examine the table and see if any assets are explicitly mentioned, with explicit locations.
 
                             If that is the case examine the table again and extract each asset and extract the following:
-                            -Asset type (like taps, showers etc)
+                            -Asset type (like taps, showers, dead ends, anything that is water/plumbing related etc)
                             -Asset location (like Main School, etc)
                             -Asset count (like 6x, 1x etc, just put the number here)
 
@@ -83,8 +83,8 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
         prompt_known_if_assets = """Below is a table extracted from an excel file in a CSV format. 
                             The table is part of a legionella risk assessment. Examine it carefully. 
                             You should extract specific data from the table if is present. The data you
-                            are looking for is specific assets. Assets are water-related equipment, like taps, showers etc.
-                            The tables are selected by a human, so they are likely likely to contain assets. 
+                            are looking for is specific assets. Assets are water/plumbing-related equipment, like taps, showers, dead ends etc.
+                            The tables are selected by a human, so they are extremely likely likely to contain assets. Take this into account when examing the table
                             The tables are extracted from pages however, and one page may contain multiple tables.
                             So it could be that case that you are examining a table from a page where another table contained the assets.
                             In that case, you should not extract the assets from the table you are examining.
@@ -93,7 +93,7 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
                             First examine the table structure carefully.
 
                             Then extract each asset and extract the following:
-                            -Asset type (like taps, showers etc)
+                            -Asset type (like taps, showers, dead ends, anything that is water/plumbing related etc)
                             -Asset location (like Main School, etc)
                             -Asset count (like 6x, 1x etc, just put the number here)
 
