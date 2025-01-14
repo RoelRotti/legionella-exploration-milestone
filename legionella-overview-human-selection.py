@@ -47,8 +47,16 @@ def reset_phase_c():
 st.title("Legionella Overview Processing App")
 st.write("This app is designed to process Legionella Overview PDF documents and generate an asset list.")
 
+
 # Add nickname input field before PDF upload
 file_nickname = st.text_input("Enter a nickname for your file (e.g., 'parkwood')", )
+
+# Add language selection dropdown
+language = st.radio(
+    "Select language",
+    options=['english', 'nederlands'],
+    index=0  # This makes 'english' the default selection
+)
 
 # Add this function after the imports and before the session state initialization
 def ensure_directories_exist():
@@ -183,7 +191,8 @@ if st.session_state.start_phase_a and not st.session_state.phase_a_completed:
     process_excel_file(file_name=file_nickname, 
                     input_path='./output-human-selection-pages/2-ExportPDFToExcel/', 
                     output_path='./output-human-selection-pages/3-ExcelToData/', 
-                    assets_known=True)
+                    assets_known=True,
+                    language='nederlands')
     
     # Allow user to download the output Excel file
     st.success("PDF processed successfully! Download your Excel file below:")
