@@ -9,6 +9,23 @@ import sys
 import pandas as pd
 import os
 
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Convert Digital Ocean environment variables to Streamlit secrets
+if 'PDF_SERVICES_CLIENT_ID' not in st.secrets:
+    for env_var in [
+        'PDF_SERVICES_CLIENT_ID',
+        'PDF_SERVICES_CLIENT_SECRET',
+        'ORQ_API_KEY'
+    ]:
+        if os.environ.get(env_var):
+            st.secrets[env_var] = os.environ.get(env_var)
+            logger.info(f"Loaded {env_var} from environment variables")
+        else:
+            logger.warning(f"Missing environment variable: {env_var}")
+
 # At the top of the file, after the imports
 if 'phase_a_completed' not in st.session_state:
     st.session_state.phase_a_completed = False

@@ -4,12 +4,16 @@ import json
 import os
 from orq_ai_sdk import Orq
 from dotenv import load_dotenv
+import streamlit as st
 
 load_dotenv()
 
 # Initialize the Orq client with the new syntax
+if 'ORQ_API_KEY' not in st.secrets:
+    raise ValueError("ORQ API key not found in environment variables")
+
 orq_client = Orq(
-    api_key=os.environ.get("ORQ_API_KEY")
+    api_key=st.secrets["ORQ_API_KEY"]
 )
 
 

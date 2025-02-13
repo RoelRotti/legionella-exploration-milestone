@@ -40,3 +40,4 @@ lessness/
 
 # API Keys and Secrets
 .env
+.streamlit/secrets.toml
