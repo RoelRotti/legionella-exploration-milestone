@@ -2,16 +2,15 @@ import logging
 import pandas as pd
 import json
 import os
-from orq_ai_sdk import OrqAI
+from orq_ai_sdk import Orq
 from dotenv import load_dotenv
 
 load_dotenv()
 
-orq_client = OrqAI(
-    api_key=os.environ.get("ORQ_API_KEY"),
-    environment="production"
+# Initialize the Orq client with the new syntax
+orq_client = Orq(
+    api_key=os.environ.get("ORQ_API_KEY")
 )
-orq_client.set_user(id=2024)
 
 
 def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', output_path='./output/3-ExcelToData/', assets_known=False, language='english'):
