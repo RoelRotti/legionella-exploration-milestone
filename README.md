@@ -169,6 +169,22 @@ Each script is designed to be:
 
 Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
 
+## CI/CD
+
+This project uses GitHub Actions for continuous integration and deployment. The workflow is configured to automatically build and push a Docker image to Azure Container Registry (ACR) whenever changes are pushed to the main branch.
+
+### GitHub Workflow
+
+The workflow (`.github/workflows/docker-build-push.yml`) performs the following steps:
+1. Checks out the code
+2. Logs in to Azure Container Registry
+3. Builds the Docker image
+4. Pushes the image to ACR with the `latest` tag
+
+The Docker image is stored at `ldstreamlitapp.azurecr.io/streamlit-app:latest`.
+
+The image should be updated, but for deploying as webapp this can easiest be done directly from the ACR
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details 
