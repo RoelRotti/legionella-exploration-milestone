@@ -176,4 +176,4 @@ webcolors==24.11.1
 webencodings==0.5.1
 websocket-client==1.8.0
 XlsxWriter==3.2.0
-xlrd==2.0.1
+xlrd==0.7.1
