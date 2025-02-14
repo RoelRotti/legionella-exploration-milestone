@@ -22,13 +22,10 @@ load_dotenv()
 
 class ExportPDFToExcel:
     def __init__(self):
-        # Use Streamlit secrets instead of os.getenv
-        if 'PDF_SERVICES_CLIENT_ID' not in st.secrets:
-            raise ValueError("PDF Services credentials not found in environment variables")
-            
+        # Use environment variables directly with fallback to Streamlit secrets
         self.credentials = ServicePrincipalCredentials(
-            client_id=st.secrets['PDF_SERVICES_CLIENT_ID'],
-            client_secret=st.secrets['PDF_SERVICES_CLIENT_SECRET']
+            client_id=os.environ.get("PDF_SERVICES_CLIENT_ID", st.secrets.get("PDF_SERVICES_CLIENT_ID", "")),
+            client_secret=os.environ.get("PDF_SERVICES_CLIENT_SECRET", st.secrets.get("PDF_SERVICES_CLIENT_SECRET", ""))
         )
         self.pdf_services = PDFServices(credentials=self.credentials)
         self.temp_dir = 'temp_pdfs'
