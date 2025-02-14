@@ -22,23 +22,16 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
     excel_file_path = input_path+file_name+'-pdf-extract.xlsx'
 
     try:
-        # Try with openpyxl first
-        try:
-            dfs = pd.read_excel(
-                excel_file_path,
-                sheet_name=None,  # None means read all sheets
-                engine='openpyxl'
-            )
-        except Exception as e:
-            logging.warning(f"Failed to read with openpyxl: {str(e)}, trying with odf engine")
-            # Try with odf engine as fallback
-            dfs = pd.read_excel(
-                excel_file_path,
-                sheet_name=None,
-                engine='odf'
-            )
+        # Force openpyxl engine, never fall back to xlrd
+        logging.info(f"Reading Excel file: {excel_file_path}")
+        dfs = pd.read_excel(
+            excel_file_path,
+            sheet_name=None,  # None means read all sheets
+            engine='openpyxl'
+        )
+        logging.info(f"Successfully read {len(dfs)} sheets from Excel file")
     except Exception as e:
-        logging.error(f"Error reading Excel file with all engines: {str(e)}")
+        logging.error(f"Error reading Excel file: {str(e)}")
         raise
 
     df_assets = pd.DataFrame()
