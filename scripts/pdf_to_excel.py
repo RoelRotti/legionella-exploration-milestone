@@ -22,10 +22,18 @@ load_dotenv()
 
 class ExportPDFToExcel:
     def __init__(self):
-        # Use environment variables directly with fallback to Streamlit secrets
+        # Get credentials from environment variables
+        client_id = os.environ.get("PDF_SERVICES_CLIENT_ID")
+        client_secret = os.environ.get("PDF_SERVICES_CLIENT_SECRET")
+        
+        if not client_id or not client_secret:
+            logging.error("Adobe PDF Services credentials are missing from environment variables")
+            raise ValueError("Adobe PDF Services credentials (PDF_SERVICES_CLIENT_ID and PDF_SERVICES_CLIENT_SECRET) must be set in environment variables")
+            
+        logging.info("Initializing Adobe PDF Services with credentials")
         self.credentials = ServicePrincipalCredentials(
-            client_id=os.environ.get("PDF_SERVICES_CLIENT_ID", st.secrets.get("PDF_SERVICES_CLIENT_ID", "")),
-            client_secret=os.environ.get("PDF_SERVICES_CLIENT_SECRET", st.secrets.get("PDF_SERVICES_CLIENT_SECRET", ""))
+            client_id=client_id,
+            client_secret=client_secret
         )
         self.pdf_services = PDFServices(credentials=self.credentials)
         self.temp_dir = 'temp_pdfs'

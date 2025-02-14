@@ -9,9 +9,12 @@ import streamlit as st
 load_dotenv()
 
 # Initialize the Orq client using environment variable directly
-orq_client = Orq(
-    api_key=os.environ.get("ORQ_API_KEY", st.secrets.get("ORQ_API_KEY", ""))  # Fallback to empty string if not found
-)
+orq_api_key = os.environ.get("ORQ_API_KEY")
+if not orq_api_key:
+    logging.error("ORQ API key is missing from environment variables")
+    raise ValueError("ORQ_API_KEY must be set in environment variables")
+
+orq_client = Orq(api_key=orq_api_key)
 
 def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', output_path='./output/3-ExcelToData/', assets_known=False, language='english'):
 
