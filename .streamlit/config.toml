@@ -1,0 +1,10 @@
+[server]
+maxUploadSize = 200
+maxMessageSize = 200
+enableXsrfProtection = false
+
+[client]
+showErrorDetails = true
+
+[logger]
+level = "info" 

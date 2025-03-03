@@ -98,6 +98,15 @@ st.header("Phase A: PDF to Excel Conversion")
 st.write("Upload a PDF file with filtered pages. Filter the pages for tables that contain assets.")
 uploaded_pdf = st.file_uploader("Upload PDF or Excel file", type=["pdf", "xlsx", "xls"])
 
+# Add detailed logging for upload debugging
+if uploaded_pdf:
+    try:
+        st.write(f"File uploaded: {uploaded_pdf.name}, size: {uploaded_pdf.size} bytes, type: {uploaded_pdf.type}")
+        logging.info(f"File uploaded: {uploaded_pdf.name}, size: {uploaded_pdf.size} bytes, type: {uploaded_pdf.type}")
+    except Exception as e:
+        st.error(f"Error accessing file metadata: {str(e)}")
+        logging.error(f"Error accessing file metadata: {str(e)}")
+
 # Add start button and reset button
 if uploaded_pdf and file_nickname:
     col1, col2 = st.columns(2)
@@ -122,8 +131,22 @@ if st.session_state.start_phase_a and not st.session_state.phase_a_completed:
 
         # Save uploaded PDF to the filtered manually folder
         input_pdf_path = f'./output-human-selection-pages/1-FilteredManually/{file_nickname}-filtered-pages.pdf'
-        with open(input_pdf_path, 'wb') as f:
-            f.write(uploaded_pdf.getvalue())
+        try:
+            # Ensure directory exists
+            os.makedirs(os.path.dirname(input_pdf_path), exist_ok=True)
+            
+            # Save file with detailed error logging
+            with open(input_pdf_path, 'wb') as f:
+                file_content = uploaded_pdf.getvalue()
+                logging.info(f"Writing {len(file_content)} bytes to {input_pdf_path}")
+                f.write(file_content)
+            
+            logging.info(f"File saved successfully to {input_pdf_path}")
+        except Exception as e:
+            error_msg = f"Error saving uploaded PDF: {str(e)}"
+            logging.error(error_msg)
+            st.error(error_msg)
+            st.stop()
         
         # Process the uploaded PDF file
         processor = ExportPDFToExcel()
