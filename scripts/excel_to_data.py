@@ -5,6 +5,7 @@ import os
 from orq_ai_sdk import Orq
 from dotenv import load_dotenv
 import streamlit as st
+import openpyxl  # Explicitly import openpyxl
 
 load_dotenv()
 
@@ -25,13 +26,30 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
     excel_file_path = input_path+file_name+'-pdf-extract.xlsx'
 
     try:
-        # Force openpyxl engine, never fall back to xlrd
+        # Directly use openpyxl to read the workbook
         logging.info(f"Reading Excel file: {excel_file_path}")
-        dfs = pd.read_excel(
-            excel_file_path,
-            sheet_name=None,  # None means read all sheets
-            engine='openpyxl'
-        )
+        workbook = openpyxl.load_workbook(excel_file_path, read_only=True)
+        
+        # Create a dictionary to store DataFrames for each sheet
+        dfs = {}
+        
+        # Process each sheet
+        for sheet_name in workbook.sheetnames:
+            worksheet = workbook[sheet_name]
+            
+            # Get data from worksheet
+            data = []
+            for row in worksheet.rows:
+                data.append([cell.value for cell in row])
+            
+            # Convert data to DataFrame
+            if data:
+                # Use first row as header
+                headers = data[0]
+                if data[1:]:
+                    df = pd.DataFrame(data[1:], columns=headers)
+                    dfs[sheet_name] = df
+        
         logging.info(f"Successfully read {len(dfs)} sheets from Excel file")
     except Exception as e:
         logging.error(f"Error reading Excel file: {str(e)}")
