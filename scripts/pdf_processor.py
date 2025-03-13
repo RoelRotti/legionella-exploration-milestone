@@ -3,14 +3,11 @@ import io
 import os
 import fitz
 from PIL import Image
-from PyPDF2 import PdfReader, PdfWriter
 import openai
 import json
 import logging
 import json
 import pandas as pd
-import xlsxwriter
-import pickle
 from dotenv import load_dotenv
 
 load_dotenv()

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import PyPDF2
 import pandas as pd
 import streamlit as st
+import xlsxwriter
 
 from adobe.pdfservices.operation.auth.service_principal_credentials import ServicePrincipalCredentials
 from adobe.pdfservices.operation.exception.exceptions import ServiceApiException, ServiceUsageException, SdkException

@@ -23,6 +23,8 @@ wheels/
 
 # Virtual Environment
 venv/
+venv_py313/
+venv_py3/
 ENV/
 
 # IDE
