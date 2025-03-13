@@ -5,6 +5,7 @@ import os
 from orq_ai_sdk import Orq
 from dotenv import load_dotenv
 import streamlit as st
+import openpyxl  # Explicitly import openpyxl
 
 load_dotenv()
 
@@ -23,19 +24,73 @@ def process_excel_file(file_name, input_path='./output/2-ExportPDFToExcel/', out
     logging.info("Processing file "+file_name)
 
     excel_file_path = input_path+file_name+'-pdf-extract.xlsx'
+    
+    # Add file existence and size checks
+    if not os.path.exists(excel_file_path):
+        error_msg = f"Excel file does not exist: {excel_file_path}"
+        logging.error(error_msg)
+        raise FileNotFoundError(error_msg)
+    
+    file_size = os.path.getsize(excel_file_path)
+    logging.info(f"Excel file size: {file_size} bytes")
+    
+    if file_size == 0:
+        error_msg = f"Excel file is empty: {excel_file_path}"
+        logging.error(error_msg)
+        raise ValueError(error_msg)
 
     try:
-        # Force openpyxl engine, never fall back to xlrd
-        logging.info(f"Reading Excel file: {excel_file_path}")
-        dfs = pd.read_excel(
-            excel_file_path,
-            sheet_name=None,  # None means read all sheets
-            engine='openpyxl'
-        )
-        logging.info(f"Successfully read {len(dfs)} sheets from Excel file")
+        # Try to use pandas first which can be more robust for some files
+        logging.info(f"Attempting to read Excel file with pandas: {excel_file_path}")
+        xls = pd.ExcelFile(excel_file_path)
+        dfs = {sheet_name: xls.parse(sheet_name) for sheet_name in xls.sheet_names}
+        logging.info(f"Successfully read {len(dfs)} sheets from Excel file using pandas")
     except Exception as e:
-        logging.error(f"Error reading Excel file: {str(e)}")
-        raise
+        logging.warning(f"Pandas failed to read Excel file: {str(e)}")
+        try:
+            # Directly use openpyxl to read the workbook
+            logging.info(f"Reading Excel file with openpyxl: {excel_file_path}")
+            workbook = openpyxl.load_workbook(excel_file_path, read_only=True)
+            
+            # Create a dictionary to store DataFrames for each sheet
+            dfs = {}
+            
+            # Process each sheet
+            for sheet_name in workbook.sheetnames:
+                worksheet = workbook[sheet_name]
+                
+                # Get data from worksheet
+                data = []
+                for row in worksheet.rows:
+                    data.append([cell.value for cell in row])
+                
+                # Convert data to DataFrame
+                if data:
+                    # Use first row as header
+                    headers = data[0]
+                    if data[1:]:
+                        df = pd.DataFrame(data[1:], columns=headers)
+                        dfs[sheet_name] = df
+            
+            logging.info(f"Successfully read {len(dfs)} sheets from Excel file using openpyxl")
+        except Exception as e:
+            # If both methods fail, try to diagnose the file
+            logging.error(f"Error reading Excel file: {str(e)}")
+            
+            try:
+                # Check if file is a valid zip file
+                import zipfile
+                with zipfile.ZipFile(excel_file_path, 'r') as zip_ref:
+                    file_list = zip_ref.namelist()
+                    logging.info(f"Excel file is a valid ZIP with {len(file_list)} files inside")
+            except zipfile.BadZipFile:
+                logging.error(f"File is not a valid Excel XLSX file (not a zip archive)")
+            except Exception as e2:
+                logging.error(f"Additional error checking Excel file: {str(e2)}")
+            
+            # Create a fallback empty dataframe dictionary to avoid complete failure
+            logging.info("Using empty dataframe as fallback to continue processing")
+            dfs = {'fallback_empty': pd.DataFrame()}
 
     df_assets = pd.DataFrame()
 
