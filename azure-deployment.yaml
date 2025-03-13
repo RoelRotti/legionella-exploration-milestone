@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legionella-webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: legionella-webapp
+  template:
+    metadata:
+      labels:
+        app: legionella-webapp
+    spec:
+      containers:
+      - name: legionella-webapp
+        image: ${REGISTRY_NAME}.azurecr.io/legionella-webapp:latest
+        ports:
+        - containerPort: 8501
+        env:
+        - name: STREAMLIT_BROWSER_SERVER_ADDRESS
+          value: "${AZURE_WEBAPP_NAME}.azurewebsites.net"
+        - name: STREAMLIT_BROWSER_SERVER_PORT
+          value: "443"
+        - name: STREAMLIT_SERVER_ADDRESS
+          value: "0.0.0.0"
+        - name: STREAMLIT_SERVER_PORT
+          value: "8501" 
