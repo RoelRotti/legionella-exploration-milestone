@@ -66,12 +66,22 @@ load_dotenv()
 
 class ExportPDFToExcel:
     def __init__(self):
+        if not adobe_sdk_available:
+            error_msg = "Adobe PDF Services SDK failed to initialize. Check previous error logs for details."
+            logging.error(error_msg)
+            raise RuntimeError(error_msg)
+
         # Get credentials from environment variables
         client_id = os.environ.get("PDF_SERVICES_CLIENT_ID")
         client_secret = os.environ.get("PDF_SERVICES_CLIENT_SECRET")
         
+        # Log credential presence (without exposing values)
+        logging.info(f"PDF_SERVICES_CLIENT_ID present: {bool(client_id)}")
+        logging.info(f"PDF_SERVICES_CLIENT_SECRET present: {bool(client_secret)}")
+        
         if not client_id or not client_secret:
-            logging.error("Adobe PDF Services credentials are missing from environment variables")
+            error_msg = "Adobe PDF Services credentials are missing from environment variables"
+            logging.error(error_msg)
             raise ValueError("Adobe PDF Services credentials (PDF_SERVICES_CLIENT_ID and PDF_SERVICES_CLIENT_SECRET) must be set in environment variables")
         
         logging.info("Initializing Adobe PDF Services with credentials")
@@ -80,13 +90,27 @@ class ExportPDFToExcel:
                 client_id=client_id,
                 client_secret=client_secret
             )
+            logging.info("Successfully created ServicePrincipalCredentials")
+            
             self.pdf_services = PDFServices(credentials=self.credentials)
+            logging.info("Successfully initialized PDFServices")
+            
+            # Test credentials by attempting a simple operation
+            logging.info("Testing Adobe PDF Services credentials...")
+            test_result = self.pdf_services.get_service_info()
+            logging.info(f"Credentials test successful. Service info: {test_result}")
+            
         except Exception as e:
-            logging.error(f"Failed to initialize Adobe PDF Services: {str(e)}")
-            raise
+            error_msg = f"Failed to initialize Adobe PDF Services: {str(e)}"
+            logging.error(error_msg)
+            if hasattr(e, 'response'):
+                logging.error(f"Response status: {e.response.status_code}")
+                logging.error(f"Response body: {e.response.text}")
+            raise RuntimeError(error_msg)
             
         self.temp_dir = 'temp_pdfs'
         os.makedirs(self.temp_dir, exist_ok=True)
+        logging.info(f"Created temp directory at {self.temp_dir}")
 
     def split_pdf(self, input_pdf):
         pdf_reader = PyPDF2.PdfReader(input_pdf)
@@ -105,30 +129,53 @@ class ExportPDFToExcel:
 
     def convert_pdf_to_excel(self, pdf_path, page_num):
         try:
+            logging.info(f"Starting PDF to Excel conversion for page {page_num}")
+            logging.info(f"Reading PDF file: {pdf_path}")
+            
             with open(pdf_path, 'rb') as file:
                 input_stream = file.read()
+                logging.info(f"Successfully read PDF file, size: {len(input_stream)} bytes")
 
+            logging.info("Uploading PDF to Adobe services")
             input_asset = self.pdf_services.upload(input_stream=input_stream, 
                                                  mime_type=PDFServicesMediaType.PDF)
+            logging.info("PDF uploaded successfully")
 
+            logging.info("Creating export job parameters")
             export_pdf_params = ExportPDFParams(target_format=ExportPDFTargetFormat.XLSX)
             export_pdf_job = ExportPDFJob(input_asset=input_asset, 
                                          export_pdf_params=export_pdf_params)
+            logging.info("Export job parameters created")
 
+            logging.info("Submitting export job")
             location = self.pdf_services.submit(export_pdf_job)
+            logging.info(f"Job submitted successfully, location: {location}")
+
+            logging.info("Waiting for job result")
             pdf_services_response = self.pdf_services.get_job_result(location, ExportPDFResult)
+            logging.info("Got job result")
 
             result_asset: CloudAsset = pdf_services_response.get_result().get_asset()
             stream_asset: StreamAsset = self.pdf_services.get_content(result_asset)
+            logging.info("Retrieved result content")
 
             output_file = os.path.join(self.output_dir, f'page_{page_num}.xlsx')
+            logging.info(f"Writing result to: {output_file}")
             with open(output_file, "wb") as f:
-                f.write(stream_asset.get_input_stream())
+                content = stream_asset.get_input_stream()
+                f.write(content)
+                logging.info(f"Successfully wrote {len(content)} bytes to Excel file")
             
             return output_file
 
         except (ServiceApiException, ServiceUsageException, SdkException) as e:
-            logging.exception(f'Exception encountered while executing operation: {e}')
+            logging.exception(f'Adobe API Exception encountered while executing operation: {str(e)}')
+            if hasattr(e, 'response'):
+                logging.error(f'Response status: {e.response.status_code}')
+                logging.error(f'Response body: {e.response.text}')
+            return None
+        except Exception as e:
+            logging.exception(f'Unexpected error during PDF to Excel conversion: {str(e)}')
             return None
 
     def merge_excel_files(self, excel_files):
@@ -201,24 +248,60 @@ class ExportPDFToExcel:
         self.output_dir = output_path
         os.makedirs(self.output_dir, exist_ok=True)
 
-        # Construct output path
-        input_pdf_path= f'{input_path}{file_name}-filtered-pages.pdf'
-        #utput_pdf_path = os.path.join(self.output_dir, f'{file_name}-pdf-extract.xlsx')
-
+        # Construct input path and verify file
+        input_pdf_path = f'{input_path}{file_name}-filtered-pages.pdf'
+        if not os.path.exists(input_pdf_path):
+            error_msg = f"Input PDF file not found: {input_pdf_path}"
+            logging.error(error_msg)
+            raise FileNotFoundError(error_msg)
+            
+        # Log file details
+        file_size = os.path.getsize(input_pdf_path)
+        logging.info(f"Input PDF file size: {file_size} bytes")
+        
+        # Verify file is readable
+        try:
+            with open(input_pdf_path, 'rb') as f:
+                pdf_reader = PyPDF2.PdfReader(f)
+                page_count = len(pdf_reader.pages)
+                logging.info(f"Successfully opened PDF. Page count: {page_count}")
+        except Exception as e:
+            error_msg = f"Failed to read input PDF: {str(e)}"
+            logging.error(error_msg)
+            raise RuntimeError(error_msg)
         
         # Split PDF into individual pages
         temp_pdf_files = self.split_pdf(input_pdf_path)
+        logging.info(f"Split PDF into {len(temp_pdf_files)} temporary files")
         
         # Convert each page to Excel
         excel_files = []
         for i, pdf_file in enumerate(temp_pdf_files):
             logging.info(f"Processing page {i + 1}")
             excel_file = self.convert_pdf_to_excel(pdf_file, i + 1)
-            excel_files.append(excel_file)
+            if excel_file:
+                excel_files.append(excel_file)
+            else:
+                logging.warning(f"Failed to convert page {i + 1} to Excel")
+        
+        if not excel_files:
+            error_msg = "No Excel files were generated from PDF conversion"
+            logging.error(error_msg)
+            raise RuntimeError(error_msg)
         
         # Merge Excel files
-        logging.info("Merging Excel files")
+        logging.info(f"Merging {len(excel_files)} Excel files")
         self.merge_excel_files(excel_files)
+        
+        # Verify output file
+        output_path = os.path.join(self.output_dir, f'{self.file_name}-pdf-extract.xlsx')
+        if not os.path.exists(output_path):
+            error_msg = f"Output Excel file was not created: {output_path}"
+            logging.error(error_msg)
+            raise RuntimeError(error_msg)
+            
+        output_size = os.path.getsize(output_path)
+        logging.info(f"Generated Excel file size: {output_size} bytes")
         
         # Cleanup temporary files
         self.cleanup(temp_pdf_files, excel_files)
