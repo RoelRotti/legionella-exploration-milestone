@@ -95,10 +95,17 @@ class ExportPDFToExcel:
             self.pdf_services = PDFServices(credentials=self.credentials)
             logging.info("Successfully initialized PDFServices")
             
-            # Test credentials by attempting a simple operation
+            # Create a small test PDF in memory to verify the service
             logging.info("Testing Adobe PDF Services credentials...")
-            test_result = self.pdf_services.get_service_info()
-            logging.info(f"Credentials test successful. Service info: {test_result}")
+            test_pdf = b"%PDF-1.7\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF"
+            try:
+                test_asset = self.pdf_services.upload(
+                    input_stream=test_pdf,
+                    mime_type=PDFServicesMediaType.PDF
+                )
+                logging.info("Successfully tested credentials by uploading test PDF")
+            except Exception as e:
+                raise RuntimeError(f"Failed to test credentials: {str(e)}")
             
         except Exception as e:
             error_msg = f"Failed to initialize Adobe PDF Services: {str(e)}"
